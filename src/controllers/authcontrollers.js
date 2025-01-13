@@ -1,6 +1,9 @@
 const User = require("../models/users/model.js");
-const { hashPassword } = require("../utills/bcrypt.js");
-const { registerSchema } = require("../validations/authValidations.js");
+const { hashPassword, comparePassword } = require("../utills/bcrypt.js");
+const {
+    registerSchema,
+    loginSchema,
+} = require("../validations/authValidations.js");
 const {
     generateAccessToken,
     generateRefreshToken,
@@ -31,7 +34,10 @@ const login = async (req, res) => {
 
         // Find the user by email or phone number
         const user = await User.findOne({
-            $or: [{ email }, { phone_number }],
+            $or: [
+                { email: { $eq: email, $ne: null } },
+                { phone_number: { $eq: phone_number, $ne: null } },
+            ],
         });
 
         if (!user) {
@@ -45,7 +51,7 @@ const login = async (req, res) => {
 
         if (!isPasswordValid) {
             return res.status(400).json({
-                error: "Invalid email/phone number or password.",
+                error: "Invalid password.",
             });
         }
 
@@ -58,9 +64,11 @@ const login = async (req, res) => {
             access_token: accessToken,
             refresh_token: refreshToken,
             user: {
-                id: user._id,
+                name: user.name,
+                _id: user._id,
                 email: user.email,
                 phone_number: user.phone_number,
+                profile_picture: user.profile_picture,
             },
         });
     } catch (error) {
@@ -93,7 +101,10 @@ const register = async (req, res) => {
 
         // Check if the email or phone number is already in use
         const existingUser = await User.findOne({
-            $or: [{ email }, { phone_number }],
+            $or: [
+                { email: { $eq: email, $ne: null } },
+                { phone_number: { $eq: phone_number, $ne: null } },
+            ],
         });
         if (existingUser) {
             return res.status(400).json({
@@ -125,9 +136,10 @@ const register = async (req, res) => {
             refresh_token: refreshToken,
             user: {
                 name: newUser.name,
-                id: newUser._id,
+                _id: newUser._id,
                 email: newUser.email,
                 phone_number: newUser.phone_number,
+                profile_picture: newUser.profile_picture,
             },
         });
     } catch (error) {
@@ -185,7 +197,13 @@ const signIn = async (req, res) => {
 
             res.status(200).json({
                 access_token: newAccessToken,
-                user,
+                user: {
+                    name: user.name,
+                    _id: user._id,
+                    email: user.email,
+                    phone_number: user.phone_number,
+                    profile_picture: user.profile_picture,
+                },
             });
         } else if (decodedData === "Invalid token") {
             return res.status(400).json({ error: "Invalid access token" });

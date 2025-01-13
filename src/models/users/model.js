@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
+        default: null,
         sparse: true, // Allows null values while maintaining uniqueness
         validate: {
             validator: function (v) {
@@ -45,10 +46,12 @@ const UserSchema = new Schema({
     },
     bio: {
         type: String,
+        default: "Hey I Am At Memogram",
         maxlength: [160, "Bio cannot exceed 160 characters"],
     },
     profile_picture: {
         type: String,
+        default: null,
         validate: {
             validator: function (v) {
                 return !v || /^https?:\/\/.*\.(jpg|jpeg|png|gif)$/.test(v); // Optional: Valid image URL
@@ -58,12 +61,39 @@ const UserSchema = new Schema({
     },
     cover_image: {
         type: String,
+        default: null,
         validate: {
             validator: function (v) {
                 return !v || /^https?:\/\/.*\.(jpg|jpeg|png|gif)$/.test(v);
             },
             message: "Cover image must be a valid image URL.",
         },
+    },
+    posts: {
+        type: Number,
+        default: 0,
+    },
+    following: {
+        type: [
+            {
+                _id: { type: mongoose.Types.ObjectId, required: true }, // Referencing another user
+                profile_picture: { type: String },
+                username: { type: String },
+                name: { type: String },
+            },
+        ],
+        default: [], // Default to an empty array
+    },
+    followers: {
+        type: [
+            {
+                _id: { type: mongoose.Types.ObjectId, required: true }, // Referencing another user
+                profile_picture: { type: String },
+                username: { type: String },
+                name: { type: String },
+            },
+        ],
+        default: [], // Default to an empty array
     },
     joined_on: {
         type: Date,

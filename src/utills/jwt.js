@@ -4,7 +4,7 @@ const {
     REFRESHTOKENEXPIRY,
     ACCESSTOKENSECRET,
     REFRESHTOKENSECRET,
-} = require("../utills/jwt.js");
+} = require("../env.js");
 
 const generateAccessToken = (user) => {
     return jwt.sign(
@@ -14,6 +14,7 @@ const generateAccessToken = (user) => {
             email: user.email,
             username: user.username,
             phone_number: user.phone_number,
+            profile_picture: user.profile_picture,
         },
         ACCESSTOKENSECRET,
         { expiresIn: ACCESSTOKENEXPIRY },
@@ -25,8 +26,8 @@ const generateRefreshToken = (user) => {
         {
             _id: user._id,
         },
-        REFRESHTOKENEXPIRY,
-        { expiresIn: REFRESHTOKENSECRET },
+        REFRESHTOKENSECRET,
+        { expiresIn: REFRESHTOKENEXPIRY },
     );
 };
 
