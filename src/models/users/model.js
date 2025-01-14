@@ -11,17 +11,10 @@ const UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
-        sparse: true, // Allows multiple undefined/null values
-        validate: {
-            validator: function (v) {
-                return !v || /^[a-zA-Z0-9_.]+$/.test(v); // Optional: Alphanumeric, underscores, dots
-            },
-            message:
-                "Username can only contain letters, numbers, underscores, and dots.",
-        },
     },
     email: {
         type: String,
+        unique: true,
         validate: {
             validator: function (v) {
                 return !v || /^\S+@\S+\.\S+$/.test(v); // Optional: Basic email validation

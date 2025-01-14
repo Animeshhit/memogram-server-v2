@@ -37,12 +37,7 @@ const login = async (req, res) => {
         }
 
         // Find the user by email or phone number
-        const user = await User.findOne({
-            $or: [
-                { email: { $eq: email, $ne: null } },
-                { phone_number: { $eq: phone_number, $ne: null } },
-            ],
-        });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({
@@ -104,12 +99,7 @@ const register = async (req, res) => {
         }
 
         // Check if the email or phone number is already in use
-        const existingUser = await User.findOne({
-            $or: [
-                { email: { $eq: email, $ne: null } },
-                { phone_number: { $eq: phone_number, $ne: null } },
-            ],
-        });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({
                 error: "A user with the provided email or phone number already exists.",
