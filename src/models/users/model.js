@@ -11,8 +11,7 @@ const UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
-        default: null,
-        sparse: true, // Allows null values while maintaining uniqueness
+        sparse: true, // Allows multiple undefined/null values
         validate: {
             validator: function (v) {
                 return !v || /^[a-zA-Z0-9_.]+$/.test(v); // Optional: Alphanumeric, underscores, dots

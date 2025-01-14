@@ -1,5 +1,9 @@
 const User = require("../models/users/model.js");
-const { hashPassword, comparePassword } = require("../utills/bcrypt.js");
+const {
+    hashPassword,
+    comparePassword,
+    generateUniqueUsername,
+} = require("../utills/bcrypt.js");
 const {
     registerSchema,
     loginSchema,
@@ -121,6 +125,7 @@ const register = async (req, res) => {
             email: email || null, // Use null if email is not provided
             phone_number: phone_number || null, // Use null if phone number is not provided
             password: hashedPassword,
+            username: generateUniqueUsername(email),
         });
 
         // Save the user to the database

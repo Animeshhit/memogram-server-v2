@@ -21,4 +21,24 @@ const comparePassword = async (plainPassword, hashedPassword) => {
     }
 };
 
-module.exports = { hashPassword, comparePassword };
+function generateUniqueUsername(email) {
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+        throw new Error("Invalid email address provided.");
+    }
+
+    // Extract the part before the "@" symbol
+    const baseUsername = email
+        .split("@")[0]
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+
+    // Append a random number or timestamp for uniqueness
+    const uniqueSuffix = Math.floor(Math.random() * 10000); // Random 4-digit number
+
+    // Combine base username and suffix
+    const uniqueUsername = `${baseUsername}${uniqueSuffix}`;
+
+    return uniqueUsername;
+}
+
+module.exports = { hashPassword, comparePassword, generateUniqueUsername };

@@ -8,5 +8,8 @@ const {
 router.post("/login", login);
 router.post("/register", register);
 router.get("/login", signIn);
+router.get("/", (req, res) => {
+    res.status(200).json({ message: "hello" });
+});
 
 module.exports = router;
