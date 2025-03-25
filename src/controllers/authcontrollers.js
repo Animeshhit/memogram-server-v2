@@ -64,7 +64,6 @@ const login = async (req, res) => {
             refresh_token: refreshToken,
             user: {
                 name: user.name,
-                _id: user._id,
                 email: user.email,
                 phone_number: user.phone_number,
                 profile_picture: user.profile_picture,
@@ -131,7 +130,6 @@ const register = async (req, res) => {
             refresh_token: refreshToken,
             user: {
                 name: newUser.name,
-                _id: newUser._id,
                 email: newUser.email,
                 phone_number: newUser.phone_number,
                 profile_picture: newUser.profile_picture,
@@ -194,7 +192,6 @@ const signIn = async (req, res) => {
                 access_token: newAccessToken,
                 user: {
                     name: user.name,
-                    _id: user._id,
                     email: user.email,
                     phone_number: user.phone_number,
                     profile_picture: user.profile_picture,
