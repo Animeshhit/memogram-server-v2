@@ -56,9 +56,9 @@ const UserSchema = new Schema({
         default: null,
         validate: {
             validator: function (v) {
-                return !v || /^https?:\/\/.*\.(jpg|jpeg|png|gif)$/.test(v);
+                return !v || /^https?:\/\/.*\.(jpg|jpeg|png|gif)$/.test(v); // Optional: Valid image URL
             },
-            message: "Cover image must be a valid image URL.",
+            message: "Profile picture must be a valid image URL.",
         },
     },
     posts: {
